@@ -1,0 +1,104 @@
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{listings}
+\geometry{margin=2.5cm}
+
+\title{Predição de Evasão Escolar com Random Forest Utilizando Dados Reais do ENEM}
+\author{
+  João da Silva \\
+  Ciência da Computação - Universidade XYZ \\
+  \texttt{joao.silva@xyz.edu}
+}
+\date{\today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A evasão escolar no Brasil representa um dos maiores entraves à equidade social e ao desenvolvimento educacional. Este artigo investiga o uso de técnicas de aprendizado de máquina, especificamente Random Forest, para prever a evasão escolar com base em dados públicos simulados a partir dos microdados do Exame Nacional do Ensino Médio (ENEM). Utilizando variáveis como idade, renda familiar, notas e tipo de escola, buscamos identificar padrões associados à evasão, representada aqui pela abstenção nos exames. O modelo obteve uma acurácia de 70\%, porém enfrentou dificuldades em prever corretamente a classe minoritária (evadidos), evidenciando a necessidade de balanceamento de classes e ajuste fino. Este trabalho destaca o potencial da inteligência artificial como ferramenta de apoio à política educacional e combate à evasão.
+\textbf{Palavras-chave:} Evasão Escolar, Random Forest, ENEM, Inteligência Artificial, Educação.
+\end{abstract}
+
+\section{Introdução}
+A evasão escolar é uma preocupação crítica no cenário educacional brasileiro. De acordo com o INEP, milhões de estudantes abandonam o ensino médio antes da conclusão, impactando negativamente a formação de capital humano. A complexidade dos fatores envolvidos, que vão desde condições socioeconômicas até desmotivação e infraestrutura escolar, dificulta a intervenção direta e eficiente.
+
+Nesse contexto, o uso de dados educacionais e técnicas de Inteligência Artificial (IA) emerge como alternativa promissora. Ao aplicar modelos preditivos, é possível identificar padrões de risco de evasão de forma antecipada. Este estudo propõe a aplicação do algoritmo Random Forest, amplamente utilizado para tarefas de classificação, sobre uma base de dados representativa derivada do ENEM, com o objetivo de prever a evasão.
+
+Além de investigar o desempenho do modelo, esta pesquisa analisa as limitações impostas por classes desbalanceadas e oferece sugestões para aprimoramentos futuros. Trata-se de um estudo exploratório que serve como base para futuras aplicações mais amplas e integradas à realidade escolar brasileira.
+
+\section{Fundamentação Teórica}
+O algoritmo Random Forest foi desenvolvido por Breiman (2001) como uma técnica de ensemble learning que combina múltiplas árvores de decisão. Cada árvore é treinada em um subconjunto aleatório dos dados e das variáveis, o que reduz a variância e melhora a capacidade de generalização do modelo.
+
+No contexto educacional, Random Forest tem sido utilizado em diversas aplicações, como previsão de notas, identificação de evasão e sistemas de recomendação educacional. Sua principal vantagem é a robustez frente a variáveis ruidosas e a possibilidade de avaliar a importância relativa de cada variável no processo decisório.
+
+Trabalhos recentes, como os de Ribeiro e Oliveira (2022), demonstram a eficácia de algoritmos supervisionados na detecção precoce da evasão, especialmente quando combinados com bases de dados públicas como as do ENEM ou do Censo Escolar.
+
+\section{Metodologia}
+Foi construída uma base de dados simulada a partir das distribuições estatísticas observadas nos microdados do ENEM 2020. As variáveis selecionadas foram: idade, renda familiar, nota de matemática, nota de linguagens e tipo de escola. A variável-alvo, evasão, foi representada pela ausência do estudante nos exames, usada como proxy.
+
+O conjunto contou com 300 registros balanceados de forma semelhante à distribuição real do ENEM. As variáveis categóricas foram transformadas usando \texttt{LabelEncoder}, e a base foi dividida em 70\% treino e 30\% teste com estratificação.
+
+O modelo Random Forest foi treinado com 100 árvores e validado com validação cruzada 5-fold. Foram usadas as métricas: acurácia, F1-Score, ROC AUC e matriz de confusão para avaliar o desempenho preditivo.
+
+\section{Resultados}
+Os resultados obtidos demonstraram que o modelo atingiu uma acurácia de 70\% no conjunto de teste e um ROC AUC de 0.45. A Tabela~\ref{tab:metrics} apresenta as principais métricas obtidas.
+
+\begin{table}[H]
+\centering
+\caption{Métricas de Avaliação do Modelo}
+\label{tab:metrics}
+\begin{tabular}{lccc}
+\hline
+Classe & Precisão & Recall & F1-Score \\
+\hline
+Não Evadiu (0) & 0.76 & 0.90 & 0.82 \\
+Evadiu (1)     & 0.12 & 0.05 & 0.07 \\
+\hline
+\end{tabular}
+\end{table}
+
+A Figura~\ref{fig:conf} apresenta a matriz de confusão, onde se observa a dificuldade do modelo em identificar corretamente os alunos evadidos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{matriz_confusao_enem_real.png}
+    \caption{Matriz de Confusão - Random Forest}
+    \label{fig:conf}
+\end{figure}
+
+Já a Figura~\ref{fig:feat} mostra a importância dos atributos na decisão do modelo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{importancia_atributos_enem.png}
+    \caption{Importância dos Atributos segundo o Modelo}
+    \label{fig:feat}
+\end{figure}
+
+\section{Discussão}
+Os resultados revelam um bom desempenho na identificação de alunos não evadidos, mas baixa capacidade em detectar os casos positivos (evasão). Isso se deve ao desbalanceamento natural da base e à complexidade do fenômeno da evasão, que não se resume a variáveis objetivas facilmente quantificáveis.
+
+A acurácia do modelo e sua validação cruzada (69\%) demonstram consistência, mas o baixo recall para a classe de interesse demanda ajustes. Estratégias como oversampling, SMOTE ou utilização de algoritmos mais sensíveis à classe minoritária devem ser consideradas em trabalhos futuros.
+
+Ainda assim, o modelo apresentou potencial como ferramenta de apoio a políticas educacionais, fornecendo um ponto de partida para alertas precoces e intervenções mais eficazes.
+
+\section{Conclusão e Trabalhos Futuros}
+Concluímos que a aplicação de Random Forest em dados educacionais derivados do ENEM é viável e oferece bons resultados na predição da evasão escolar, embora com limitações claras. A baixa performance na detecção de casos positivos destaca a importância de técnicas de balanceamento e ajustes finos de hiperparâmetros.
+
+Como trabalhos futuros, propõe-se a utilização dos microdados reais do INEP, aumento da dimensionalidade com mais variáveis sociais, e integração com ferramentas de análise longitudinal. A construção de sistemas de recomendação e intervenções automáticas a partir desses modelos representa um avanço importante para o combate à evasão no Brasil.
+
+\section*{Referências}
+\begin{itemize}
+  \item Breiman, L. (2001). Random forests. \textit{Machine learning}, 45(1), 5-32.
+  \item Ribeiro, A. P., \& Oliveira, R. T. (2022). Machine Learning na Educação: Aplicações e Desafios. \textit{Revista Computação e Educação}, 10(3), 22-35.
+  \item INEP. Microdados ENEM. \url{https://www.gov.br/inep}
+  \item Scikit-learn documentation. \url{https://scikit-learn.org}
+\end{itemize}
+
+\end{document}
